@@ -3,11 +3,11 @@
 <g clip-path="url(#clip0_8318_8387)">
 <rect x="10" y="8" width="12" height="12" rx="2" fill="#94C20A"/>
 </g>
-<rect x="9" y="7" width="14" height="14" rx="3" stroke="#2B353A" stroke-width="2"/>
+<rect x="9" y="7" width="14" height="14" rx="3" stroke="black" stroke-width="2"/>
 <g clip-path="url(#clip1_8318_8387)">
 <rect x="30" y="8" width="12" height="12" rx="2" fill="#94C20A"/>
 </g>
-<rect x="29" y="7" width="14" height="14" rx="3" stroke="#2B353A" stroke-width="2"/>
+<rect x="29" y="7" width="14" height="14" rx="3" stroke="black" stroke-width="2"/>
 </g>
 <defs>
 <filter id="filter0_d_8318_8387" x="0" y="0" width="52" height="32" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">

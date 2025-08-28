@@ -6,7 +6,7 @@
 <path fill-rule="evenodd" clip-rule="evenodd" d="M13.375 26.375C13.375 26.0298 13.6548 25.75 14 25.75L30.5 25.75C30.8452 25.75 31.125 26.0298 31.125 26.375C31.125 26.7202 30.8452 27 30.5 27L14 27C13.6548 27 13.375 26.7202 13.375 26.375Z" fill="black"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.375 13.875C19.375 13.5298 19.6548 13.25 20 13.25H24C24.2468 13.25 24.4705 13.3953 24.5709 13.6207C24.6714 13.8462 24.6297 14.1096 24.4646 14.2931L22.2146 16.7931C21.9836 17.0497 21.5885 17.0705 21.3319 16.8396C21.0753 16.6086 21.0545 16.2135 21.2854 15.9569L22.5966 14.5H20C19.6548 14.5 19.375 14.2202 19.375 13.875Z" fill="black"/>
 </g>
-<rect x="9" y="7" width="26" height="26" rx="3" stroke="#2B353A" stroke-width="2"/>
+<rect x="9" y="7" width="26" height="26" rx="3" stroke="black" stroke-width="2"/>
 </g>
 <defs>
 <filter id="filter0_d_8318_8323" x="0" y="0" width="44" height="44" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
