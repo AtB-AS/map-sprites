@@ -8,14 +8,18 @@ OUT_BASE="./generated_sprites"
 THEMES=("light" "dark")
 RESOLUTIONS=("" "@2x")
 
-# Discover namespaces from folder structure
-echo "📂 Scanning sprite_assets for namespaces..."
-NAMESPACES=()
-for dir in sprite_assets/*/; do
-  [ -d "$dir" ] && NAMESPACES+=("$(basename "$dir")")
-done
-
-echo "🔍 Found namespaces: ${NAMESPACES[*]}"
+# Accept optional namespace args; default to all discovered namespaces
+if [[ $# -gt 0 ]]; then
+  NAMESPACES=("$@")
+  echo "🔍 Using provided namespaces: ${NAMESPACES[*]}"
+else
+  echo "📂 Scanning sprite_assets for namespaces..."
+  NAMESPACES=()
+  for dir in sprite_assets/*/; do
+    [ -d "$dir" ] && NAMESPACES+=("$(basename "$dir")")
+  done
+  echo "🔍 Found namespaces: ${NAMESPACES[*]}"
+fi
 
 # 1. Stop & remove existing container
 echo "🔄 Stopping and removing any existing 'martin' container..."
@@ -42,7 +46,6 @@ done
 DOCKER_CMD=(
   docker run -d
   --name martin
-  --restart unless-stopped
   -p 3000:3000
   "${VOLUME_ARGS[@]}"
   ghcr.io/maplibre/martin:v0.13.0
@@ -60,7 +63,10 @@ echo "🚀 Starting 'martin' container..."
 
 # 6. Wait for it to boot up
 echo "⏳ Waiting for martin to initialize..."
-sleep 2
+for i in {1..30}; do
+  curl -sf http://localhost:3000/health >/dev/null && break
+  sleep 1
+done
 
 # 7. Download sprite files
 echo "⬇️ Downloading sprite images (.png and .json)..."
@@ -76,7 +82,7 @@ for NAME in "${NAMESPACES[@]}"; do
         OUTPUT="${OUT_DIR}/${FILENAME}"
 
         echo "  ➤ Downloading ${URL}"
-        curl -sf -o "${OUTPUT}" "${URL}" || echo "⚠️  Failed to download: ${URL}"
+        curl -sf -o "${OUTPUT}" "${URL}"
       done
     done
   done
