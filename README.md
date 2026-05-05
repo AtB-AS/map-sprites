@@ -20,3 +20,21 @@
    ```
 
 > **CI:** When a pull request touches files under `sprite_assets/`, GitHub Actions automatically regenerates sprites for the changed namespaces and commits the result back to the PR branch. No manual script run needed.
+
+3. **Upload sprites to GCS**
+
+   Pre-requisites:
+   - `gcloud` CLI installed and authenticated: `gcloud auth application-default login`
+   - Your account needs `roles/storage.objectAdmin` on the target `*--shared-assets` buckets.
+
+   ```sh
+   bash upload_sprites.sh staging   # upload to all staging buckets
+   bash upload_sprites.sh prod      # upload to all prod buckets
+   ```
+
+   Each run:
+   - Bumps the version automatically (reads last version from `uploads.md`, increments)
+   - Uploads all four tenants (AtB, Troms, NFK, FRAM) to the new `vN` path in their respective GCS buckets
+   - Commits the new `uploads.md` row and pushes an annotated git tag `upload/<env>/v<N>`
+
+   After uploading, open a PR in `firestore-configuration` to point the `mapboxSpriteUrls` for the relevant tenants at the new version path.
