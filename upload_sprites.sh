@@ -30,12 +30,17 @@ gcloud auth print-access-token >/dev/null 2>&1 || \
   { echo "❌ gcloud not authenticated. Run: gcloud auth application-default login"; exit 1; }
 
 [[ -z "$(git status --porcelain)" ]] || \
-  { echo "❌ working tree dirty — commit or stash first (manifest and tag must point at a real commit)"; exit 1; }
+  { echo "❌ working tree dirty — commit or stash first"; exit 1; }
 
 git fetch origin --quiet
-BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-git merge-base --is-ancestor HEAD "origin/$BRANCH" 2>/dev/null || \
-  { echo "❌ HEAD not pushed to origin/$BRANCH — push first"; exit 1; }
+
+BASE_BRANCH="main"
+git merge-base --is-ancestor HEAD "origin/$BASE_BRANCH" 2>/dev/null && \
+  [[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/$BASE_BRANCH)" ]] || \
+  { echo "❌ HEAD must be at origin/$BASE_BRANCH — run: git checkout $BASE_BRANCH && git pull"; exit 1; }
+
+command -v gh >/dev/null || { echo "❌ gh CLI required"; exit 1; }
+gh auth status >/dev/null 2>&1 || { echo "❌ gh not authenticated — run: gh auth login"; exit 1; }
 
 COMMIT="$(git rev-parse HEAD)"
 SHORT_SHA="$(git rev-parse --short HEAD)"
@@ -81,11 +86,26 @@ done
 # --- append manifest row ---
 echo "| $TIMESTAMP | $ENV | $NEXT_VERSION | $SHORT_SHA | $UPLOADER |" >> "$MANIFEST"
 
-# --- commit + tag + push ---
+# --- commit + tag + push as PR branch ---
+PR_BRANCH="chore/upload-${ENV}-${NEXT_VERSION}"
+
+git show-ref --verify --quiet "refs/heads/$PR_BRANCH" && \
+  { echo "❌ local branch $PR_BRANCH already exists"; exit 1; }
+git ls-remote --exit-code --heads origin "$PR_BRANCH" >/dev/null 2>&1 && \
+  { echo "❌ remote branch $PR_BRANCH already exists"; exit 1; }
+
+git checkout -b "$PR_BRANCH"
 git add "$MANIFEST"
 git commit -m "chore: upload sprites to $ENV ($NEXT_VERSION)"
 git tag -a "upload/$ENV/$NEXT_VERSION" \
   -m "Uploaded sprites to $ENV $NEXT_VERSION at $TIMESTAMP (commit $SHORT_SHA, by $UPLOADER)"
-git push --follow-tags
 
-echo "✅ done — tag: upload/$ENV/$NEXT_VERSION"
+git push -u origin "$PR_BRANCH"
+git push origin "upload/$ENV/$NEXT_VERSION"
+
+gh pr create --base "$BASE_BRANCH" --head "$PR_BRANCH" \
+  --title "chore: upload sprites to $ENV ($NEXT_VERSION)" \
+  --body "Sprites uploaded to GCS at \`map-assets/$NEXT_VERSION/\` across all $ENV tenant buckets. This PR lands the manifest row + version tag."
+
+echo "✅ done — branch: $PR_BRANCH, tag: upload/$ENV/$NEXT_VERSION"
+echo "   review + merge the PR to land the manifest."
