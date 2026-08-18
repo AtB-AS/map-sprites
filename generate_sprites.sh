@@ -2,9 +2,16 @@
 
 set -e  # Exit on error
 
+# Pre-requisite check
+command -v python3 >/dev/null 2>&1 || {
+  echo "❌ python3 is required (used by scripts/strip_stretchable_markers.py) but was not found on PATH." >&2
+  exit 1
+}
+
 # Config
 BASE_URL="http://localhost:3000/sprite"
 OUT_BASE="./generated_sprites"
+BUILD_DIR="./.sprite_build"
 THEMES=("light" "dark")
 RESOLUTIONS=("" "@2x")
 
@@ -26,7 +33,14 @@ echo "🔄 Stopping and removing any existing 'martin' container..."
 docker stop martin >/dev/null 2>&1 || true
 docker rm martin >/dev/null 2>&1 || true
 
-# 2. Build volume mounts and --sprite args
+# 2. Strip stretch/content marker fills, then build volume mounts and --sprite args
+# (SVGs in sprite_assets/ carry visible marker rects - e.g. id="mapbox-content" -
+# so Figma doesn't drop them as invisible shapes on export. They need to be made
+# invisible before martin rasterises them, without touching the geometry martin
+# reads their content/stretchX/stretchY from. See scripts/strip_stretchable_markers.py)
+echo "🩹 Stripping stretch/content marker fills..."
+rm -rf "$BUILD_DIR"
+
 echo "📦 Building volume mounts and sprite args..."
 VOLUME_ARGS=()
 SPRITE_ARGS=()
@@ -34,10 +48,12 @@ SPRITE_ARGS=()
 for NAME in "${NAMESPACES[@]}"; do
   for THEME in "${THEMES[@]}"; do
     SRC_DIR="$(pwd)/sprite_assets/${NAME}/${THEME}"
+    PROCESSED_DIR="$(pwd)/${BUILD_DIR}/${NAME}_${THEME}"
+    mkdir -p "$PROCESSED_DIR"
+    python3 scripts/strip_stretchable_markers.py "$SRC_DIR" "$PROCESSED_DIR"
+
     TARGET_DIR="/sprite_assets/${NAME}_${THEME}"
-
-
-    VOLUME_ARGS+=(-v "${SRC_DIR}:${TARGET_DIR}")
+    VOLUME_ARGS+=(-v "${PROCESSED_DIR}:${TARGET_DIR}")
     SPRITE_ARGS+=(--sprite "${TARGET_DIR}")
   done
 done

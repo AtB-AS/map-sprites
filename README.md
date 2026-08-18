@@ -1,7 +1,8 @@
 ## 🧾 Instructions
 
 0. **Pre-requisites**
-   Docker must be installed. This is used to run a martin tile server image, which is the one that converts source files to sprites.
+   - Docker must be installed. This is used to run a martin tile server image, which is the one that converts source files to sprites.
+   - Python 3 must be installed. `generate_sprites.sh` uses it to strip the stretchable-icon marker fills (`content`/`stretchX`/`stretchY`) out of the SVGs before martin sees them (see `scripts/strip_stretchable_markers.py`). No extra packages needed - it only uses the standard library.
 
 1. **Make sure that the assets in `sprite_assets` are correct.**  
    It is essential that the file names are correct.  
