@@ -20,7 +20,12 @@
    bash generate_sprites.sh AtB FRAM
    ```
 
-> **CI:** When a pull request touches files under `sprite_assets/`, GitHub Actions automatically regenerates sprites for the changed namespaces and commits the result back to the PR branch. No manual script run needed.
+> **CI:** When a pull request touches files under `sprite_assets/` or `scripts/`, GitHub Actions runs the script tests, then (if `sprite_assets/` changed) regenerates sprites for the changed namespaces and commits the result back to the PR branch. No manual script run needed.
+
+   **Running the script tests locally:**
+   ```sh
+   python3 -m unittest discover scripts
+   ```
 
 3. **Upload sprites to GCS**
 

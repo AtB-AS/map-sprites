@@ -2,6 +2,10 @@
 #
 .DS_Store
 
-# generate_sprites.sh's intermediate output (see scripts/strip_stretch_markers.py)
+# generate_sprites.sh's intermediate output (see scripts/strip_stretchable_markers.py)
 .sprite_build/
+
+# Python
+__pycache__/
+*.pyc
 
