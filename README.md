@@ -2,14 +2,21 @@
 
 0. **Pre-requisites**
    - Docker must be installed. This is used to run a martin tile server image, which is the one that converts source files to sprites.
-   - Python 3 must be installed. `generate_sprites.sh` uses it to strip the stretchable-icon marker fills (`content`/`stretchX`/`stretchY`) out of the SVGs before martin sees them (see `scripts/strip_stretchable_markers.py`). No extra packages needed - it only uses the standard library.
+   - Python 3 must be installed. It's used by `scripts/round_svg_numbers.py` (see step 2 below) and by `generate_sprites.sh`, which uses `scripts/strip_stretchable_markers.py` to strip the stretchable-icon marker fills (`content`/`stretchX`/`stretchY`) out of the SVGs before martin sees them. No extra packages needed - both only use the standard library.
 
 1. **Make sure that the assets in `sprite_assets` are correct.**  
    It is essential that the file names are correct.  
    For each folder (= OMS partner), there should be two folders – `light` and `dark`. Then follow the same patterns as used in the app.
    Remember - all svgs should have a theme suffix -> `light` or `dark`.
 
-2. **Generate sprites**
+2. **Round the SVGs before committing.**
+   Figma re-exports the same, unchanged design with slightly different floating point noise every time (e.g. `20.4598` one export, `20.4594` the next), which makes every touched SVG show up as modified even when nothing actually changed. Run this after exporting from Figma and before committing:
+   ```sh
+   python3 scripts/round_svg_numbers.py sprite_assets
+   ```
+   This rounds every numeric value (path data, coordinates, transforms, ...) to 2 decimal places directly in the SVG files - well below one pixel at these icon sizes, so it has no visible effect, but it means two exports of the same design produce an identical diff-free file. Files that need no changes are left untouched.
+
+3. **Generate sprites**
    ```sh
    bash generate_sprites.sh
    ```
@@ -27,7 +34,7 @@
    python3 -m unittest discover scripts
    ```
 
-3. **Upload sprites to GCS**
+4. **Upload sprites to GCS**
 
    Pre-requisites:
    - `gcloud` CLI installed and authenticated: `gcloud auth application-default login`
