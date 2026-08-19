@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="62" height="51" viewBox="0 0 62 51" fill="none">
+<g id="sprite_assets/AtB/light/textpin_light">
+<g id="Union" filter="url(#filter0_d_11531_4052)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 6C11.58 6 8 9.58 8 14V28C8 32.42 11.58 36 16 36H20.05C23.04 36 25.98 37.06 28.02 39.25C28.25 39.49 28.47 39.73 28.69 39.98C29.88 41.31 32.17 41.35 33.38 40.04C33.65 39.76 33.91 39.47 34.18 39.2C36.26 37.06 39.18 36 42.15 36H46C50.42 36 54 32.42 54 28V14C54 9.58 50.42 6 46 6H16Z" fill="white" />
+</g>
+<rect id="mapbox-content" opacity="0.67" x="13" y="9" width="36" height="24" fill="#EDEDED" fill-opacity="0.01" />
+<rect id="mapbox-stretch-x-1" x="16" y="33" width="1" height="8" fill="#E1B4B3" fill-opacity="0.01" />
+<rect id="mapbox-stretch-x-2" x="45" y="33" width="1" height="8" fill="#E1B4B3" fill-opacity="0.01" />
+<rect id="mapbox-stretch-y" opacity="0.43" x="8" y="11" width="46" height="20" fill="#DEB673" fill-opacity="0.01" />
+</g>
+<defs>
+<filter id="filter0_d_11531_4052" x="0" y="0" width="62" height="51" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix" />
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+<feOffset dy="2" />
+<feGaussianBlur stdDeviation="4" />
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0" />
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_11531_4052" />
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_11531_4052" result="shape" />
+</filter>
+</defs>
+</svg>
