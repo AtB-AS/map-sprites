@@ -1,7 +1,8 @@
 ## 🧾 Instructions
 
 0. **Pre-requisites**
-   Docker must be installed. This is used to run a martin tile server image, which is the one that converts source files to sprites.
+   - Docker must be installed. This is used to run a martin tile server image, which is the one that converts source files to sprites.
+   - Python 3 must be installed. `generate_sprites.sh` uses it to strip the stretchable-icon marker fills (`content`/`stretchX`/`stretchY`) out of the SVGs before martin sees them (see `scripts/strip_stretchable_markers.py`). No extra packages needed - it only uses the standard library.
 
 1. **Make sure that the assets in `sprite_assets` are correct.**  
    It is essential that the file names are correct.  
@@ -19,7 +20,12 @@
    bash generate_sprites.sh AtB FRAM
    ```
 
-> **CI:** When a pull request touches files under `sprite_assets/`, GitHub Actions automatically regenerates sprites for the changed namespaces and commits the result back to the PR branch. No manual script run needed.
+> **CI:** When a pull request touches files under `sprite_assets/` or `scripts/`, GitHub Actions runs the script tests, then (if `sprite_assets/` changed) regenerates sprites for the changed namespaces and commits the result back to the PR branch. No manual script run needed.
+
+   **Running the script tests locally:**
+   ```sh
+   python3 -m unittest discover scripts
+   ```
 
 3. **Upload sprites to GCS**
 
