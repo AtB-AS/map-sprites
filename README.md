@@ -47,7 +47,7 @@
 
    Each run:
    - Bumps the version automatically (reads last version from `uploads.md`, increments)
-   - Uploads all four tenants (AtB, Troms, NFK, FRAM) to the new `vN` path in their respective GCS buckets
+   - Uploads all six tenants (AtB, Troms, NFK, FRAM, VKT, Farte) to the new `vN` path in their respective GCS buckets
    - Commits the new `uploads.md` row and pushes an annotated git tag `upload/<env>/v<N>`
 
    After uploading, open a PR in `firestore-configuration` to point the `mapboxSpriteUrls` for the relevant tenants at the new version path.
