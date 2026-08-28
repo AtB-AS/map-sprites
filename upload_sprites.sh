@@ -5,7 +5,7 @@ set -e
 ENV="${1:?Usage: bash upload_sprites.sh <env>  (env = staging | prod)}"
 [[ "$ENV" =~ ^(staging|prod)$ ]] || { echo "❌ env must be staging|prod"; exit 1; }
 
-NAMESPACES=(AtB Troms NFK FRAM)
+NAMESPACES=(AtB Troms NFK FRAM VKT Farte)
 
 get_bucket() {
   local ns="$1" env="$2"
@@ -14,10 +14,14 @@ get_bucket() {
     prod/Troms)    echo "troms-prod--shared-assets" ;;
     prod/NFK)      echo "nfk-prod--shared-assets" ;;
     prod/FRAM)     echo "fram-prod-a7850--shared-assets" ;;
+    prod/VKT)      echo "vkt-prod--shared-assets" ;;
+    prod/Farte)    echo "farte-prod--shared-assets" ;;
     staging/AtB)   echo "atb-mobility-platform-staging--shared-assets" ;;
     staging/Troms) echo "troms-staging--shared-assets" ;;
     staging/NFK)   echo "nfk-staging--shared-assets" ;;
     staging/FRAM)  echo "fram-staging--shared-assets" ;;
+    staging/VKT)   echo "vkt-staging--shared-assets" ;;
+    staging/Farte) echo "farte-staging--shared-assets" ;;
     *) echo "" ;;
   esac
 }
