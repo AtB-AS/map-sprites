@@ -12,3 +12,4 @@ Append-only log. Each row = one upload run (all four tenants uploaded to the sam
 | 2026-05-12T13:44:46Z | prod | v6 | 8fe61ec | adrian_berg96@hotmail.com |
 | 2026-08-19T18:27:00Z | staging | v7 | 647c291 | adrian_berg96@hotmail.com |
 | 2026-08-26T12:07:49Z | prod | v7 | f7333f6 | adrian_berg96@hotmail.com |
+| 2026-08-31T09:24:18Z | staging | v8 | bf7a5c1 | adrianwisthakvag@gmail.com |
